@@ -25,7 +25,7 @@ namespace HPlusSport.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet, Route("{id}")]
+        [HttpGet("{id}")]
         public ActionResult GetProduct(int id)
         {
             var product = _shopContext.Products.FirstOrDefault(x => x.Id == id);
