@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HPlusSport.API.Data;
+using HPlusSport.API.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HPlusSport.API.Controllers
@@ -7,10 +9,19 @@ namespace HPlusSport.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        [HttpGet]
-        public void GetProducts()
+        private readonly ShopContext _shopContext;
+        public ProductsController(ShopContext shopContext)
         {
+            _shopContext = shopContext;
+            
+            //Make sure the database is seeded before trying to retrieve data
+            _shopContext.Database.EnsureCreated();
+        }
 
+        [HttpGet]
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _shopContext.Products.ToList();
         }
     }
 }
