@@ -20,7 +20,7 @@ namespace HPlusSport.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProductsAsync()
+        public async Task<ActionResult> GetAllProductsAsync()
         {
             var products = await _shopContext.Products.ToListAsync();
             return Ok(products);
@@ -35,6 +35,18 @@ namespace HPlusSport.API.Controllers
                 return NotFound();
 
             return Ok(product);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> PostProduct(Product product)
+        {
+            _shopContext.Products.Add(product);
+            await _shopContext.SaveChangesAsync();
+
+            return CreatedAtAction(
+                "GetProduct",
+                new {id = product.Id},
+                product);
         }
     }
 }
