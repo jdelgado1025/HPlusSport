@@ -82,11 +82,13 @@ namespace HPlusSport.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            var product = _shopContext.Products.FirstOrDefault(p => p.Id == id);
+            //We don't need the whole product, just need to know it exists
+            var product = _shopContext.Products.Find(id);
+            //_shopContext.Products.FirstOrDefault(p => p.Id == id);
 
             if(product == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var result = _shopContext.Entry(product).State = EntityState.Deleted;
