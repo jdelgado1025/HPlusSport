@@ -91,19 +91,12 @@ namespace HPlusSport.API.Controllers
                 return NotFound();
             }
 
-            var result = _shopContext.Entry(product).State = EntityState.Deleted;
+            //var result = _shopContext.Entry(product).State = EntityState.Deleted;
+            //Preferred .NET way of removing objects is below
+            _shopContext.Products.Remove(product);
+            await _shopContext.SaveChangesAsync();
 
-            try
-            {
-                await _shopContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return Ok($"Successfuly deleted product with an id of {id}");
+            return Ok(product);
         }
     }
 }
