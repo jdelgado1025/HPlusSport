@@ -88,7 +88,7 @@ namespace HPlusSport.API.Controllers
 
             if(product == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var result = _shopContext.Entry(product).State = EntityState.Deleted;
