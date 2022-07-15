@@ -83,7 +83,7 @@ namespace HPlusSport.API.Controllers
         public async Task<ActionResult> DeleteProduct(int id)
         {
             //We don't need the whole product, just need to know it exists
-            var product = _shopContext.Products.Find(id);
+            var product = await _shopContext.Products.FindAsync(id);
             //_shopContext.Products.FirstOrDefault(p => p.Id == id);
 
             if(product == null)
