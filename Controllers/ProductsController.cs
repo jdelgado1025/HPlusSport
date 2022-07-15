@@ -78,5 +78,30 @@ namespace HPlusSport.API.Controllers
             return NoContent();
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProduct(int id)
+        {
+            var product = _shopContext.Products.FirstOrDefault(p => p.Id == id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            var result = _shopContext.Entry(product).State = EntityState.Deleted;
+
+            try
+            {
+                await _shopContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Ok($"Successfuly deleted product with an id of {id}");
+        }
     }
 }
