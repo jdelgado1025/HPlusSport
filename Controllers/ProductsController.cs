@@ -25,14 +25,25 @@ namespace HPlusSport.API.Controllers
             //Get a queryable list of products
             IQueryable<Product> products = _shopContext.Products;
 
+            //Filter items by minimum price
             if(queryParameters.MinPrice != null)
             {
                 products = products.Where(p => p.Price >= queryParameters.MinPrice.Value);
             }
-
+            //Filter items by maximum price
             if(queryParameters.MaxPrice != null)
             {
                 products = products.Where(p => p.Price <= queryParameters.MaxPrice.Value);
+            }
+            //Filter by search string on SKU
+            if (!string.IsNullOrEmpty(queryParameters.Sku))
+            {
+                products = products.Where(p => p.Sku == queryParameters.Sku);
+            }
+
+            if (!string.IsNullOrEmpty(queryParameters.Name))
+            {
+                products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
             }
 
             products = products
