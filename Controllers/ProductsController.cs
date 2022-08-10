@@ -41,11 +41,19 @@ namespace HPlusSport.API.Controllers
                 products = products.Where(p => p.Sku == queryParameters.Sku);
             }
 
+            //Filter by search on product name
             if (!string.IsNullOrEmpty(queryParameters.Name))
             {
                 products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
             }
 
+            //Sort products by user provided query
+            if (!string.IsNullOrEmpty(queryParameters.SortBy))
+            {
+
+            }
+
+            //Pagination
             products = products
                 .Skip(queryParameters.Size * (queryParameters.Page - 1)) //Skip the pages before the request page
                 .Take(queryParameters.Size);                             //Retrieve only the page size of results
