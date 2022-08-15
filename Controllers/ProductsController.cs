@@ -55,17 +55,7 @@ namespace HPlusSport.API.Controllers
             {
                 if(typeof(Product).GetProperty(queryParameters.SortBy) != null)
                 {
-                    //Use reflection to get the sortBy property
-                    var productPropInfo = typeof(Product).GetProperty(queryParameters.SortBy);
-                    switch (queryParameters.SortOrder)
-                    {
-                        case "desc":
-                            products = products.OrderByDescending(p => productPropInfo.GetValue(p));
-                            break;
-                        default:
-                            products = products.AsEnumerable().OrderBy(p => productPropInfo.GetValue(p)).AsQueryable();
-                            break;
-                    }
+                    products = products.OrderByCustom(queryParameters.SortBy, queryParameters.SortOrder);
                 }
             }
 
