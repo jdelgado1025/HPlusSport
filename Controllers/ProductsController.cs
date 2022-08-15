@@ -3,6 +3,9 @@ using HPlusSport.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+//using System.Linq;
+//using System.Linq.Dynamic.Core;
+using System.Reflection;
 
 namespace HPlusSport.API.Controllers
 {
@@ -50,7 +53,20 @@ namespace HPlusSport.API.Controllers
             //Sort products by user provided query
             if (!string.IsNullOrEmpty(queryParameters.SortBy))
             {
-
+                if(typeof(Product).GetProperty(queryParameters.SortBy) != null)
+                {
+                    //Use reflection to get the sortBy property
+                    var productPropInfo = typeof(Product).GetProperty(queryParameters.SortBy);
+                    switch (queryParameters.SortOrder)
+                    {
+                        case "desc":
+                            products = products.OrderByDescending(p => productPropInfo.GetValue(p));
+                            break;
+                        default:
+                            products = products.AsEnumerable().OrderBy(p => productPropInfo.GetValue(p)).AsQueryable();
+                            break;
+                    }
+                }
             }
 
             //Pagination
