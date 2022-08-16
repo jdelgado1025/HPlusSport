@@ -47,14 +47,17 @@ namespace HPlusSport.API.Controllers
             //Filter by search on product name
             if (!string.IsNullOrEmpty(queryParameters.Name))
             {
-                var name = queryParameters.Name;
+                products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(queryParameters.SearchTerm))
+            {
+                var searchTerm = queryParameters.SearchTerm;
                 products = products.Where(
-                    p => p.Name.ToLower().Contains(name.ToLower()) ||
-                    p.Sku.ToLower().Contains(name.ToLower()) ||
-                    p.Description.ToLower().Contains(name.ToLower())
+                        p => p.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                        p.Sku.ToLower().Contains(searchTerm.ToLower()) ||
+                        p.Description.ToLower().Contains(searchTerm.ToLower())
                     );
-                    //.Where(p => p.Sku.ToLower().Contains(queryParameters.Name.ToLower()))
-                    //.Where(p => p.Description.ToLower().Contains(queryParameters.Name.ToLower()));
             }
 
             //Sort products by user provided query
