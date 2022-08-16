@@ -7,5 +7,7 @@
         public string Sku { get; set; } = String.Empty;
         public string Name { get; set; } = String.Empty;
 
+        public string Search { get; set; } = String.Empty;
+
     }
 }
