@@ -196,7 +196,8 @@ namespace HPlusSport.API.Controllers
         public async Task<ActionResult> GetAllProductsAsync([FromQuery] ProductQueryParameters queryParameters)
         {
             //Get a queryable list of products
-            IQueryable<Product> products = _shopContext.Products;
+            //Only return available products for V2
+            IQueryable<Product> products = _shopContext.Products.Where(p => p.IsAvailable == true);
 
             //Filter items by minimum price
             if (queryParameters.MinPrice != null)
