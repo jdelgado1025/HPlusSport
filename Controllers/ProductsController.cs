@@ -38,18 +38,8 @@ namespace HPlusSport.API.Controllers
             {
                 products = products.Where(p => p.Price <= queryParameters.MaxPrice.Value);
             }
-            //Filter by search string on SKU
-            if (!string.IsNullOrEmpty(queryParameters.Sku))
-            {
-                products = products.Where(p => p.Sku == queryParameters.Sku);
-            }
 
-            //Filter by search on product name
-            if (!string.IsNullOrEmpty(queryParameters.Name))
-            {
-                products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
-            }
-
+            //Filter items by a search term
             if (!string.IsNullOrEmpty(queryParameters.SearchTerm))
             {
                 var searchTerm = queryParameters.SearchTerm;
@@ -58,6 +48,18 @@ namespace HPlusSport.API.Controllers
                         p.Sku.ToLower().Contains(searchTerm.ToLower()) ||
                         p.Description.ToLower().Contains(searchTerm.ToLower())
                     );
+            }
+
+            //Filter our product result set by search string on SKU
+            if (!string.IsNullOrEmpty(queryParameters.Sku))
+            {
+                products = products.Where(p => p.Sku == queryParameters.Sku);
+            }
+
+            //Filter our product result set by search on product Name
+            if (!string.IsNullOrEmpty(queryParameters.Name))
+            {
+                products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
             }
 
             //Sort products by user provided query
