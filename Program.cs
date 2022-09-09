@@ -7,6 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.Audience = "scope1";
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            ValidateAudience = false
+        };
+    });
+
 builder.Services.AddApiVersioning(options =>
 {
     options.ReportApiVersions = true;
@@ -60,6 +71,7 @@ else
 //Enforces HTTPS by using the middleware class
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors();
